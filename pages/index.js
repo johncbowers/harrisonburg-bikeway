@@ -38,8 +38,68 @@ const segments = [
   ('Westover', 'EMU Quad', 0.5, ["West Side"]),
   ('Westover', 'Westover Friendly City Trail', 0.5, ["Friendly City Trail", "Memorial"]),
   ('Westover Friendly City Trail', 'Thomas Harrison Middle School', 0.5, ["Friendly City Trail"]),
-  ('Thomas Harrison Middle School', 'Rocktown Trails', 0.5, ["Friendly City Trail"])
+  ('Thomas Harrison Middle School', 'Rocktown Trails', 0.5, ["Friendly City Trail"]),
+  ('Dogwood and South Ave.', 'Food Lion on S. High', 0.5, ["West Side"]),
+  ('Westover', 'Dogwood and South Ave.', 0.5, ["West Side"]),
+  ('EMU Quad', 'Westover', 0.5, ["West Side"]),
+  ('Westover Friendly City Trail', 'Westover', 0.5, ["Friendly City Trail", "Memorial"]),
+  ('Thomas Harrison Middle School', 'Westover Friendly City Trail', 0.5, ["Friendly City Trail"]),
+  ('Rocktown Trails', 'Thomas Harrison Middle School', 0.5, ["Friendly City Trail"])
 ];
+const graph = {};
+
+function graph_init() {
+  // Builds a graph whose vertices are the locations and whose edges are the segments.
+  // Returns a dictionary whose keys are the locations and whose values are the segments that start at that location.
+  
+  for (let location of locations) {
+    graph[location] = [];
+  }
+  for (let segment of segments) {
+    const [start, end, distance, line] = segment;
+    graph[start].push((end, distance, line));
+  }
+}
+
+graph_init();
+
+function dijkstra(start, end, graph) {
+  // Returns a list of segments that form the shortest path from start to end.
+  // Uses Dijkstra's algorithm.
+  // start and end are strings representing locations.
+  // graph is a dictionary whose keys are the locations and whose values are the segments that start at that location.
+
+  const distances = {};
+  const previous = {};
+  const queue = []; // Using a priority queue would be more efficient, but for now we'll use a list. Optimize later.
+  const path = [];
+
+  for (let location of locations) {
+    distances[location] = Infinity;
+    previous[location] = null;
+    queue.push((location, 0));
+  }
+  distances[start] = 0;
+
+  while (queue.length > 0) {
+    // Loop over the queue until we find the closest vertex
+    let closest = queue[0];
+    let closest_index = 0;
+    for (let i = 1; i < queue.length; i++) {
+      if (queue[i][1] < closest[1]) {
+        closest = queue[i];
+        closest_index = i;
+      }
+    }
+    // remove the minimum element from the queu
+    queue[closest_index] = queue[queue.length - 1];
+    queue.pop();
+
+    // TODO FINISH FROM HERE
+
+  }
+
+}
 
 function PlannerView(props) {
   return (
